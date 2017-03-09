@@ -37,6 +37,22 @@ public class Test {
     private static List<MItem> allItems = new ArrayList<MItem>();
     private static MenuTest view;
     private static String downloadDir = "d:\\download\\";
+    private static int speed = 10;
+
+    /**
+     * @return the speed
+     */
+    public static int getSpeed() {
+        return speed;
+    }
+
+    /**
+     * @param speed
+     *            the speed to set
+     */
+    public static void setSpeed(int speed) {
+        Test.speed = speed;
+    }
 
     /**
      * @return the downloadDir

@@ -41,7 +41,7 @@ public class MenuTest extends JFrame {
         JMenu menu1 = new JMenu("Menu(P)");
         menu1.setMnemonic('p');
 
-        JMenuItem item1 = new JMenuItem("Data Initialize");
+        JMenuItem item1 = new JMenuItem("Data Initialize(O)");
         item1.setMnemonic('o');
         item1.addActionListener(new ActionListener() {
 
@@ -53,8 +53,8 @@ public class MenuTest extends JFrame {
         });
         menu1.add(item1);
 
-        JMenuItem item2 = new JMenuItem("Save Directory");
-        item2.setMnemonic('s');
+        JMenuItem item2 = new JMenuItem("Save Directory(D)");
+        item2.setMnemonic('d');
         item2.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent arg0) {
@@ -74,6 +74,35 @@ public class MenuTest extends JFrame {
             }
         });
         menu1.add(item2);
+
+        JMenuItem item3 = new JMenuItem("download Speed(S)");
+        item3.setMnemonic('s');
+        item3.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent arg0) {
+                String s = (String) JOptionPane.showInputDialog(
+                        MenuTest.this,
+                        "멀티쓰레딩 숫자\n"
+                                + "(1~99)",
+                        "Save Directory",
+                        JOptionPane.PLAIN_MESSAGE,
+                        null,
+                        null,
+                        (Test.getSpeed() + ""));
+                if (s != null) {
+                    try {
+                        int speed = Integer.parseInt(s);
+                        if (speed > 0 && speed < 100)
+                            Test.setSpeed(speed);
+                    } catch (Exception e) {
+
+                    }
+                }
+
+            }
+        });
+        menu1.add(item2);
+        menu1.add(item3);
 
         mu.add(menu1);
 

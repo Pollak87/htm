@@ -79,7 +79,7 @@ public class DownloadProgressPanel extends JScrollPane {
 
                     itemCount = 0;
                     totalCount = curJob.getHinfos().size();
-                    for (int i = 0; i < 7; i++) {
+                    for (int i = 0; i < Test.getSpeed(); i++) {
                         if (curJob != null && !curJob.getHinfos().isEmpty())
                             createJobThread().start();
                         else
