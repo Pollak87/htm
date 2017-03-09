@@ -40,7 +40,7 @@ public class MenuTest extends JFrame {
         JMenu menu1 = new JMenu("Menu(P)");
         menu1.setMnemonic('p');
 
-        JMenuItem item1 = new JMenuItem("Init Based Data");
+        JMenuItem item1 = new JMenuItem("Data Initialize");
         item1.setMnemonic('o');
         item1.addActionListener(new ActionListener() {
 
