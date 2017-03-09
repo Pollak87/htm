@@ -2,8 +2,11 @@ package com.poak.htmdownloader.swing;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -53,7 +56,10 @@ public class Test {
     private static String getText(String name)
     {
         try {
-            String sql = IOUtils.toString(Test.class.getResourceAsStream(name));
+
+            String path = Test.getDownloadDir() + "MData(Need)/";
+            File file = new File(path, name);
+            String sql = IOUtils.toString(new FileInputStream(file));
             return sql;
         } catch (Exception e) {
             return null;
@@ -185,9 +191,8 @@ public class Test {
                     Gson g = new Gson();
                     String data = getText(i + ".json");
                     try {
-                        allItems.addAll(g.fromJson(data, listType));
+                        allItems.addAll((Collection<? extends MItem>) g.fromJson(data, listType));
                     } catch (Exception e) {
-
                     }
 
                 }

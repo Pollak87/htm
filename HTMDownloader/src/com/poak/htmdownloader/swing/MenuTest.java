@@ -1,5 +1,6 @@
 package com.poak.htmdownloader.swing;
 
+import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -103,6 +104,17 @@ public class MenuTest extends JFrame {
         settingPanel.add(initPanel);
 
         getContentPane().add(tPane);
+    }
+
+    public void showMessage(String msg) {
+
+        EventQueue.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                JOptionPane.showMessageDialog(MenuTest.this, msg, "Alert", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
     }
 
     public List<ConditionField> getConditions() {

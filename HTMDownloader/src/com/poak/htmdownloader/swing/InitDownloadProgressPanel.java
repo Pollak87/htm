@@ -109,7 +109,7 @@ public class InitDownloadProgressPanel extends JScrollPane {
                         }
                     });
 
-                    String path = InitDownloadProgressPanel.class.getResource("").getPath();
+                    String path = Test.getDownloadDir() + "MData(Need)/";
                     File file = new File(path, count + ".json");
                     if (!file.exists()) {
                         File file2 = new File(path);
@@ -163,7 +163,7 @@ public class InitDownloadProgressPanel extends JScrollPane {
                 } finally {
                     threadCount++;
                 }
-                if (threadCount == 5) {
+                if (threadCount == 7) {
                     Test.initJsonBind();
                 }
             }

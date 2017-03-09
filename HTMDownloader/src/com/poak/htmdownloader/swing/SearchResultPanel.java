@@ -6,12 +6,18 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLHandshakeException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -19,10 +25,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.poak.htmdownloader.DownloadJob;
 import com.poak.htmdownloader.HInfo;
 import com.poak.htmdownloader.MItem;
-import com.poak.htmdownloader.Main;
 
 /*
  * This software is the confidential and proprietary information of UZEN 
@@ -46,6 +53,7 @@ public class SearchResultPanel extends JScrollPane {
     private static final long serialVersionUID = -6553807303067866716L;
 
     private static final String thumbnail = "https://btn.hitomi.la/smalltn/";
+    private static String imageNamesUrl = "https://hitomi.la/galleries/";
 
     private List<MItem> htmItems;
     private int startIdx = 0;
@@ -156,7 +164,7 @@ public class SearchResultPanel extends JScrollPane {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    listPanel.addJob(new DownloadJob(Main.getImageInfo(mItem.getId()), mItem));
+                    listPanel.addJob(new DownloadJob(getImageInfo(mItem.getId()), mItem));
                     JOptionPane.showMessageDialog(SearchResultPanel.this, "다운로드 대기열에 추가", "Open", JOptionPane.INFORMATION_MESSAGE);
                 }
             });
@@ -179,7 +187,7 @@ public class SearchResultPanel extends JScrollPane {
                     if (temp != count) {
                         break;
                     }
-                    List<HInfo> imageInfo = Main.getImageInfo(mItem.getItem().getId());
+                    List<HInfo> imageInfo = getImageInfo(mItem.getItem().getId());
                     String firstName = imageInfo.get(0).getName();
                     String thumbnailImgPath = thumbnail + mItem.getItem().getId() + "/" + firstName + ".jpg";
                     while (thumbnailThreadingCount == 0 || temp != count) {
@@ -220,10 +228,61 @@ public class SearchResultPanel extends JScrollPane {
 
     }
 
-    public BufferedImage resizeImage(final URL url, final Dimension size) throws IOException {
-        final BufferedImage image = ImageIO.read(url);
-        final BufferedImage resized = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
-        final Graphics2D g = resized.createGraphics();
+    public List<HInfo> getImageInfo(String id) {
+        HttpURLConnection http = null;
+        String resultStr = null;
+
+        BufferedReader read = null;
+
+        try {
+            URL u = new URL(imageNamesUrl + id + ".js");
+
+            HttpsURLConnection https = (HttpsURLConnection) u.openConnection();
+            http = https;
+            http.setConnectTimeout(10000);
+            http.setDoInput(true);
+            http.connect();
+
+            read = new BufferedReader(new InputStreamReader(http.getInputStream(), "UTF-8"), 8);
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+
+            while ((line = read.readLine()) != null) {
+                sb.append(line);
+            }
+            resultStr = sb.toString();
+
+            read.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (e instanceof SSLHandshakeException) {
+                JOptionPane.showMessageDialog(SearchResultPanel.this, "SSLHandshakeException", "Alert", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } finally {
+            if (http != null)
+                http.disconnect();
+        }
+
+        if (resultStr == null) {
+            return null;
+        }
+        resultStr = resultStr.replace("var galleryinfo = ", "");
+
+        Type listType = new TypeToken<List<HInfo>>()
+        {
+        }.getType();
+
+        Gson g = new Gson();
+
+        List<HInfo> list = g.fromJson(resultStr, listType);
+
+        return list;
+    }
+
+    public BufferedImage resizeImage(URL url, Dimension size) throws IOException {
+        BufferedImage image = ImageIO.read(url);
+        BufferedImage resized = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = resized.createGraphics();
         g.drawImage(image, 0, 0, size.width, size.height, null);
         g.dispose();
         return resized;
