@@ -68,6 +68,10 @@ public class SearchResult extends JPanel {
 
         JLabel id = new JLabel("ID : " + item.getId());
         content.add(id);
+        if (item.getC() != null) {
+            JLabel character = new JLabel("CT : " + item.getCharacters());
+            content.add(character);
+        }
         if (item.getT() != null) {
             JLabel tag = new JLabel(item.getTagName());
 

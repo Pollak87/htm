@@ -53,7 +53,7 @@ public class ZipUtils {
             fos = new FileOutputStream(output); // FileOutputStream
             bos = new BufferedOutputStream(fos); // BufferedStream
             zos = new ZipOutputStream(bos); // ZipOutputStream
-            zos.setLevel(COMPRESSION_LEVEL); // 압축 레벨 - 최대 압축률은 9, 디폴트 8
+            zos.setLevel(0); // 압축 레벨 - 최대 압축률은 9, 디폴트 8
             zipEntry(sourceFile, sourcePath, zos); // Zip 파일 생성
             zos.finish(); // ZipOutputStream finish
             deleteDirectory(sourceFile);

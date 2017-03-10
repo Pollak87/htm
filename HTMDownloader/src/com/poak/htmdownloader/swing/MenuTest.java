@@ -104,6 +104,18 @@ public class MenuTest extends JFrame {
         menu1.add(item2);
         menu1.add(item3);
 
+        JMenuItem item4 = new JMenuItem("Thread Plus(P)");
+        item4.setMnemonic('P');
+        item4.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent arg0) {
+                JOptionPane.showMessageDialog(MenuTest.this, "다운로드 쓰레드 추가됨", "Alert", JOptionPane.INFORMATION_MESSAGE);
+                progressPanel.threadPlus();
+
+            }
+        });
+        menu1.add(item4);
+
         mu.add(menu1);
 
         // 프레임에 부착

@@ -39,6 +39,9 @@ public class Test {
     private static String downloadDir = "d:\\download\\";
     private static int speed = 10;
 
+    private static String proxyList =
+            "[{\"IP\":\"207.154.205.235\",\"PORT\":3128,\"latest_check\":1489108810,\"ping\":16,\"connection_delay\":0,\"country\":\"UNITED STATES\",\"down_speed\":0,\"up_speed\":0,\"proxiescol\":null,\"anonymity\":\"Transparent\",\"type\":\"http\",\"google_proxy\":0},{\"IP\":\"207.154.225.89\",\"PORT\":3128,\"latest_check\":1489108810,\"ping\":0,\"connection_delay\":0,\"country\":\"UNITED STATES\",\"down_speed\":0,\"up_speed\":0,\"proxiescol\":null,\"anonymity\":\"Transparent\",\"type\":\"http\",\"google_proxy\":0},{\"IP\":\"207.99.118.74\",\"PORT\":8080,\"latest_check\":1489108810,\"ping\":78,\"connection_delay\":0,\"country\":\"UNITED STATES\",\"down_speed\":0,\"up_speed\":0,\"proxiescol\":null,\"anonymity\":\"Transparent\",\"type\":\"http\",\"google_proxy\":0},{\"IP\":\"208.109.176.11\",\"PORT\":80,\"latest_check\":1489108810,\"ping\":172,\"connection_delay\":0,\"country\":\"UNITED STATES\",\"down_speed\":0,\"up_speed\":0,\"proxiescol\":null,\"anonymity\":\"Elite\",\"type\":\"http\",\"google_proxy\":0},{\"IP\":\"208.110.80.178\",\"PORT\":3128,\"latest_check\":1489108810,\"ping\":109,\"connection_delay\":0,\"country\":\"UNITED STATES\",\"down_speed\":0,\"up_speed\":0,\"proxiescol\":null,\"anonymity\":\"Transparent\",\"type\":\"http\",\"google_proxy\":0},{\"IP\":\"208.115.238.162\",\"PORT\":3128,\"latest_check\":1489108810,\"ping\":110,\"connection_delay\":0,\"country\":\"UNITED STATES\",\"down_speed\":0,\"up_speed\":0,\"proxiescol\":null,\"anonymity\":\"Transparent\",\"type\":\"http\",\"google_proxy\":0},{\"IP\":\"208.92.94.132\",\"PORT\":1080,\"latest_check\":1489108810,\"ping\":157,\"connection_delay\":0,\"country\":\"UNITED STATES\",\"down_speed\":0,\"up_speed\":0,\"proxiescol\":null,\"anonymity\":\"Elite\",\"type\":\"http\",\"google_proxy\":1},{\"IP\":\"208.92.94.133\",\"PORT\":1080,\"latest_check\":1489108810,\"ping\":156,\"connection_delay\":0,\"country\":\"UNITED STATES\",\"down_speed\":0,\"up_speed\":0,\"proxiescol\":null,\"anonymity\":\"Elite\",\"type\":\"http\",\"google_proxy\":1}]";
+
     /**
      * @return the speed
      */
@@ -88,7 +91,6 @@ public class Test {
     public static void main(String[] args) {
 
         initJsonBind();
-
 
         view = new MenuTest(new ActionListener() {
 
@@ -196,8 +198,12 @@ public class Test {
     public static synchronized void initJsonBind() {
         new Thread(new Runnable() {
 
+
             @Override
             public void run() {
+
+                Gson g1 = new Gson();
+
                 allItems.clear();
                 long time = System.currentTimeMillis();
                 Type listType = new TypeToken<List<MItem>>()
@@ -247,6 +253,12 @@ public class Test {
             break;
         case SearchConditionPanel.LANGUAGE:
             returnvalue = new String[] { item.getL() };
+            break;
+        case SearchConditionPanel.ID:
+            returnvalue = new String[] { item.getId() };
+            break;
+        case SearchConditionPanel.TYPE:
+            returnvalue = new String[] { item.getType() };
             break;
         default:
             break;

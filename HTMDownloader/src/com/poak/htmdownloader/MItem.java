@@ -25,6 +25,7 @@ public class MItem {
     private String[] a; // 제작사
     private String[] c; // 캐릭터
     private String[] t; // 태그
+    private String videofilename;
 
     /**
      * @return the n
@@ -148,9 +149,41 @@ public class MItem {
 
     public String getTagName() {
         StringBuffer sb = new StringBuffer();
+        int count = 0;
         for (String tag : t) {
             sb.append(tag + " ");
+            if (count % 6 == 5) {
+                sb.append("\n");
+            }
         }
         return sb.toString().replace("female:", "♀").replace("male:", "♂");
     }
+
+    public String getCharacters() {
+        StringBuffer sb = new StringBuffer();
+        if (c == null)
+            return "";
+        for (String cStr : c) {
+            sb.append(cStr + " ");
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 자세한 설명.
+     *
+     * @return
+     */
+    public String getVideofilename() {
+        return videofilename;
+    }
+
+    /**
+     * @param videofilename
+     *            the videofilename to set
+     */
+    public void setVideofilename(String videofilename) {
+        this.videofilename = videofilename;
+    }
+
 }

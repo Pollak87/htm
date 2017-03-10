@@ -46,6 +46,8 @@ public class SearchConditionPanel extends JScrollPane {
     public static final String CHARACTER = "Character";
     public static final String TAG = "Tag";
     public static final String LANGUAGE = "Language";
+    public static final String ID = "Id";
+    public static final String TYPE = "Type";
 
     public static final String AND = "and";
     public static final String OR = "or";
@@ -148,6 +150,8 @@ public class SearchConditionPanel extends JScrollPane {
         keyCondition.addItem(CHARACTER);
         keyCondition.addItem(TAG);
         keyCondition.addItem(LANGUAGE);
+        keyCondition.addItem(ID);
+        keyCondition.addItem(TYPE);
 
         andOr.addItem(AND);
         andOr.addItem(OR);
